@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask 前后端交互示例</title>
+</head>
+<body>
+    <h1>欢迎来到 Flask 前后端交互示例</h1>
+
+    <label>姓名：<input type="text" id="nameInput"></label><br><br>
+    <label>年龄：<input type="number" id="ageInput"></label><br><br>
+    <button onclick="sendData()">提交</button><br><br>
+    <p id="result2"></p>
+
+    <button onclick="getFromFlask()">点击获取数据</button>
+    <p id="result1"></p>
+
+    <script>
+        function getFromFlask(){
+            fetch('/api/hello')
+                .then(response => response.json())
+                .then(data => {
+                   document.getElementById("result1").innerText = JSON.stringify(data);
+                });
+        }
+
+        function sendData(){
+            const name = document.getElementById("nameInput").value;
+            const age = document.getElementById("ageInput").value;
+
+            fetch('/api/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, age: age })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result2").innerText = JSON.stringify(data);
+            });
+        }
+    </script>
+</body>
+</html>
